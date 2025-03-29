@@ -1,0 +1,35 @@
+.layout {
+  min-height: 100vh;
+  width: 100%;
+  padding-top: 65px; /* Account for fixed navbar */
+  background-color: #f8fafc;
+}
+
+.layout-container {
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 2rem;
+  box-sizing: border-box;
+}
+
+/* Tablet Styles */
+@media (max-width: 1024px) {
+  .layout-container {
+    padding: 1.5rem;
+  }
+}
+
+/* Mobile Styles */
+@media (max-width: 768px) {
+  .layout-container {
+    padding: 1rem;
+  }
+}
+
+/* Small Mobile Styles */
+@media (max-width: 480px) {
+  .layout-container {
+    padding: 0.75rem;
+  }
+} 

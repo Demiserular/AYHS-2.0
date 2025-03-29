@@ -1,0 +1,375 @@
+.medicine-consult-section {
+  padding: 40px 20px;
+  background: linear-gradient(135deg, #f6f9fc 0%, #edf1f7 100%);
+}
+
+.section-content {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.medicine-search-card {
+  background: white;
+  padding: 30px;
+  border-radius: 15px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.icon {
+  font-size: 2rem;
+  color: var(--primary);
+}
+
+h2 {
+  margin: 0;
+  color: var(--text);
+  font-size: 1.8rem;
+}
+
+p {
+  color: var(--text-light);
+  margin-bottom: 25px;
+}
+
+.search-link {
+  text-decoration: none;
+}
+
+.search-button {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 15px 30px;
+  background: var(--primary);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 1.1rem;
+  cursor: pointer;
+  margin: 0 auto;
+  transition: all 0.3s ease;
+}
+
+.arrow-icon {
+  transition: transform 0.3s ease;
+}
+
+.search-button:hover .arrow-icon {
+  transform: translateX(5px);
+}
+
+@media (max-width: 768px) {
+  .medicine-consult-section {
+    padding: 20px 10px;
+  }
+
+  .medicine-search-card {
+    padding: 20px;
+  }
+
+  h2 {
+    font-size: 1.5rem;
+  }
+
+  .search-button {
+    width: 100%;
+    justify-content: center;
+    padding: 12px 20px;
+    font-size: 1rem;
+  }
+}
+
+.section-header {
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+.section-header h2 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #2a4365;
+  margin-bottom: 10px;
+}
+
+.section-header p {
+  font-size: 1.2rem;
+  color: #4a5568;
+}
+
+.search-container {
+  max-width: 800px;
+  margin: 0 auto 60px;
+}
+
+.search-bar {
+  display: flex;
+  position: relative;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.search-bar input {
+  flex: 1;
+  padding: 16px 20px;
+  font-size: 1.1rem;
+  border: none;
+  outline: none;
+  color: #2d3748;
+}
+
+.search-bar input::placeholder {
+  color: #a0aec0;
+}
+
+.search-btn {
+  background-color: #4a90e2;
+  color: white;
+  border: none;
+  padding: 0 25px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.search-btn:hover {
+  background-color: #3a7bc8;
+}
+
+.medicine-doctor-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 40px;
+  margin-bottom: 60px;
+}
+
+.medicines-section, .doctors-section {
+  flex: 1;
+  min-width: 300px;
+}
+
+.medicines-section h3, .doctors-section h3 {
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: #2d3748;
+  margin-bottom: 25px;
+  position: relative;
+  padding-bottom: 10px;
+}
+
+.medicines-section h3::after, .doctors-section h3::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 60px;
+  height: 3px;
+  background-color: #4a90e2;
+}
+
+.medicine-cards, .doctor-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.medicine-card, .doctor-card {
+  background-color: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+  display: flex;
+  height: 180px;
+}
+
+.medicine-card:hover, .doctor-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.medicine-image, .doctor-image {
+  width: 35%;
+  position: relative;
+  overflow: hidden;
+}
+
+.medicine-image img, .doctor-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.available-badge {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background-color: #48bb78;
+  color: white;
+  font-size: 0.7rem;
+  font-weight: 600;
+  padding: 4px 8px;
+  border-radius: 4px;
+}
+
+.medicine-content, .doctor-content {
+  padding: 15px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.medicine-content h4, .doctor-content h4 {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #2d3748;
+  margin-bottom: 5px;
+}
+
+.medicine-category, .doctor-specialty {
+  font-size: 0.9rem;
+  color: #718096;
+  margin-bottom: 10px;
+}
+
+.medicine-price {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #4a90e2;
+  margin-bottom: 10px;
+}
+
+.medicine-alternatives {
+  font-size: 0.85rem;
+  color: #4a5568;
+  margin-bottom: 15px;
+}
+
+.medicine-alternatives span {
+  font-weight: 600;
+}
+
+.medicine-alternatives ul {
+  margin: 5px 0 0 15px;
+  padding: 0;
+}
+
+.doctor-rating {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.stars {
+  color: #f6ad55;
+  margin-right: 8px;
+}
+
+.rating-number {
+  font-size: 0.9rem;
+  color: #718096;
+}
+
+.medicine-btn, .ai-advice-btn, .consult-btn {
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: auto;
+  border: none;
+}
+
+.medicine-btn {
+  background-color: #ebf4ff;
+  color: #4a90e2;
+}
+
+.medicine-btn:hover {
+  background-color: #4a90e2;
+  color: white;
+}
+
+.doctor-buttons {
+  display: flex;
+  gap: 10px;
+  margin-top: auto;
+}
+
+.ai-advice-btn {
+  background-color: #ebf8ff;
+  color: #4299e1;
+  flex: 1;
+}
+
+.ai-advice-btn:hover {
+  background-color: #4299e1;
+  color: white;
+}
+
+.consult-btn {
+  flex: 1.5;
+}
+
+.consult-btn.active {
+  background-color: #48bb78;
+  color: white;
+}
+
+.consult-btn.active:hover {
+  background-color: #38a169;
+}
+
+.consult-btn.disabled {
+  background-color: #e2e8f0;
+  color: #718096;
+  cursor: not-allowed;
+}
+
+.cta-container {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.cta-button {
+  padding: 14px 28px;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: none;
+}
+
+.ai-chat {
+  background-color: #4a90e2;
+  color: white;
+}
+
+.ai-chat:hover {
+  background-color: #3a7bc8;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.find-doctor {
+  background-color: white;
+  color: #4a90e2;
+  border: 2px solid #4a90e2;
+}
+
+.find-doctor:hover {
+  background-color: #ebf4ff;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+} 

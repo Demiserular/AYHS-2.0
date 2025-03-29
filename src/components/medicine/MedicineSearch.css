@@ -1,0 +1,119 @@
+.medicine-search {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.search-form {
+  margin-bottom: 30px;
+}
+
+.search-input-container {
+  display: flex;
+  gap: 10px;
+  background: white;
+  padding: 10px;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.search-input {
+  flex: 1;
+  padding: 12px;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 1rem;
+  outline: none;
+  transition: border-color 0.3s;
+}
+
+.search-input:focus {
+  border-color: var(--primary);
+}
+
+.search-button {
+  padding: 12px 24px;
+  background: var(--primary);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.spinner {
+  animation: spin 1s linear infinite;
+}
+
+.result-card {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  margin-bottom: 15px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.result-info h4 {
+  margin: 0;
+  color: var(--text);
+}
+
+.price {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #38a169;
+  margin: 5px 0;
+}
+
+.website {
+  color: var(--text-light);
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+.buy-button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  background: var(--primary);
+  color: white;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.error-message {
+  background: #fed7d7;
+  color: #c53030;
+  padding: 12px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@media (max-width: 768px) {
+  .medicine-search {
+    padding: 10px;
+  }
+
+  .result-card {
+    flex-direction: column;
+    text-align: center;
+    gap: 15px;
+  }
+
+  .buy-button {
+    width: 100%;
+    justify-content: center;
+  }
+} 

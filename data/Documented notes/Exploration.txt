@@ -1,0 +1,58 @@
+C:\Users\sc895\Project\AYHS>python explore_data.py
+======================================================================
+MEDICATION ADHERENCE DATASET OVERVIEW
+======================================================================
+
+Total patients: 5000
+
+Adherence Statistics:
+  Adherent (≥80%): 2004 patients
+  Non-adherent (<70%): 1739 patients
+  Mean adherence score: 75.3%
+
+
+Top 5 Causes of Non-Adherence:
+primary_non_adherence_cause
+Cost concerns            328
+Forgetfulness            219
+Medication complexity    197
+Transportation issues    188
+Too many medications     158
+Name: count, dtype: int64
+
+
+Age Distribution:
+  Min age: 18
+  Max age: 90
+  Mean age: 54.6
+
+
+Medication Complexity:
+medication_complexity
+Low       3032
+Medium    1291
+High       677
+Name: count, dtype: int64
+
+
+Income Level Distribution:
+income_level
+Middle    2534
+Low       1447
+High      1019
+Name: count, dtype: int64
+
+
+Education Level:
+education_level
+Some College    1501
+Bachelor        1461
+High School     1271
+Graduate         767
+Name: count, dtype: int64
+
+======================================================================
+✓ Data exploration complete!
+======================================================================
+
+C:\Users\sc895\Project\AYHS>

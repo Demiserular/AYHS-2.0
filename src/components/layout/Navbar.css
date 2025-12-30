@@ -108,29 +108,12 @@
   background-color: rgba(74, 144, 226, 0.1);
 }
 
-/* Tablet Styles */
+/* Tablet & Laptop Styles */
 @media (max-width: 1024px) {
   .nav-links {
-    padding: 0.5rem 0.8rem;
-    font-size: 1.1rem;
+    padding: 0.5rem 0.7rem;
+    font-size: 1.05rem;
   }
-}
-
-/* Mobile Styles */
-@media (max-width: 768px) {
-  .navbar {
-    height: 60px;
-  }
-
-  .navbar-container {
-    height: 60px;
-    padding: 0 16px;
-  }
-
-  .navbar-logo {
-    font-size: 1.6rem;
-  }
-
   .menu-icon {
     display: flex;
     align-items: center;
@@ -139,7 +122,6 @@
     position: relative;
     z-index: 1000;
   }
-
   .nav-menu {
     display: flex;
     flex-direction: column;
@@ -160,18 +142,15 @@
     padding: 10px;
     gap: 5px;
   }
-
   .nav-menu.active {
     right: 0;
     opacity: 1;
   }
-
   .nav-item {
     width: 100%;
     height: auto;
     margin: 0;
   }
-
   .nav-links {
     text-align: center;
     padding: 16px;
@@ -179,23 +158,20 @@
     height: auto;
     border-radius: 12px;
     justify-content: center;
+    min-height: 44px;
   }
-
   .nav-links::after {
     display: none;
   }
-
   .nav-links:hover,
   .nav-links.active {
     background-color: rgba(74, 144, 226, 0.1);
     color: #4a90e2;
   }
-
   .login-item {
     margin-left: 0;
     margin-top: 10px;
   }
-  
   .login-link {
     justify-content: center;
   }
@@ -280,4 +256,42 @@ body.menu-open {
 .login-link.active {
   background-color: #4a90e2;
   color: white !important;
+}
+
+.profile-dropdown {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 4px 16px rgba(74, 144, 226, 0.08);
+  border-radius: 10px;
+  min-width: 140px;
+  z-index: 2000;
+  padding: 0.5rem 0;
+  display: flex;
+  flex-direction: column;
+  animation: fadeIn 0.2s ease;
+}
+
+.dropdown-link {
+  color: #4a5568;
+  text-decoration: none;
+  padding: 10px 18px;
+  font-size: 1rem;
+  background: none;
+  border: none;
+  text-align: left;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+  border-radius: 6px;
+}
+
+.dropdown-link:hover {
+  background: rgba(74, 144, 226, 0.08);
+  color: #4a90e2;
+}
+
+.profile-item {
+  position: relative;
 } 

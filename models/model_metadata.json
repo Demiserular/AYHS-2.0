@@ -1,0 +1,13 @@
+{
+  "model_name": "Logistic Regression",
+  "best_params": {
+    "C": 0.01,
+    "penalty": "l2",
+    "solver": "lbfgs"
+  },
+  "test_accuracy": 1.0,
+  "test_roc_auc": 1.0,
+  "training_date": "2025-11-14 14:47:23",
+  "num_features": 66,
+  "training_samples": 4000
+}

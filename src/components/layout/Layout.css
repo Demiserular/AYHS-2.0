@@ -13,10 +13,11 @@
   box-sizing: border-box;
 }
 
-/* Tablet Styles */
+/* Tablet & Laptop Styles */
 @media (max-width: 1024px) {
   .layout-container {
-    padding: 1.5rem;
+    max-width: 980px;
+    padding: 1.2rem;
   }
 }
 

@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { FaUser, FaLock, FaHeartbeat, FaStethoscope, FaTablets, FaHospital } from 'react-icons/fa';
 import { motion, AnimatePresence } from 'framer-motion';
 import './LoginPage.css';
+import { login as loginUser, isAuthenticated, logout } from '../services/authService';
 
 const LoginPage = () => {
   const [email, setEmail] = useState('doctor@aysh.com');
@@ -38,15 +39,11 @@ const LoginPage = () => {
     e.preventDefault();
     setIsLoading(true);
     setError('');
-
     try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      
-      // For demo purposes, we'll just navigate to home
+      await loginUser(email, password);
       navigate('/');
     } catch (err) {
-      setError('Invalid credentials. Please try again.');
+      setError(err.response?.data?.error || 'Invalid credentials. Please try again.');
     } finally {
       setIsLoading(false);
     }
@@ -226,7 +223,12 @@ const LoginPage = () => {
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5, delay: 1.5 }}
           >
-            <p>Don't have an account? <a href="#">Register</a></p>
+            <p>Don't have an account? <a href="/register">Register</a></p>
+            {isAuthenticated() && (
+              <button className="logout-button" onClick={() => { logout(); navigate('/login'); }}>
+                Logout
+              </button>
+            )}
             <div className="pulse-container">
               <motion.div 
                 className="pulse"

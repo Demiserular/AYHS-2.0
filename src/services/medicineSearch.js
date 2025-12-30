@@ -7,7 +7,7 @@ const SEARCH_ENGINE_ID = '53a77f332e466495f'; // Custom Search Engine ID
 export const searchMedicine = async (medicineName) => {
   try {
     const response = await axios.get(
-      'http://localhost:3001/search-medicine',
+      'http://localhost:3001/',
       {
         params: {
           medicineName

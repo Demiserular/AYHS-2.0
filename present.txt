@@ -1,0 +1,65 @@
+AYHS - A Web-Based Healthcare Assistant
+Project Presentation
+
+1. Project Overview
+-------------------
+AYHS is a comprehensive web-based healthcare assistant designed to empower users in managing their health effectively. I developed this project to solve common fragmentation issues in personal healthcare management by integrating medicine search, doctor consultation, adherence tracking, and AI-driven health advice into a single, unified platform.
+
+2. Development Process & Technology Stack
+-----------------------------------------
+I adopted a modern full-stack approach, utilizing a monorepo structure to manage both frontend and backend seamlessly.
+
+*   Frontend Development:
+    I built the user interface using React.js with Vite for rapid development and high performance.
+    - Styling: I used Tailwind CSS for responsive design and GSAP for smooth animations, ensuring a modern and engaging user experience.
+    - State Management: Implemented React Query to handle server state efficiently.
+    - AI Integration: leveraged TensorFlow.js for client-side ML capabilities.
+
+*   Backend Development:
+    I developed a robust RESTful API using Node.js and Express.js.
+    - Database: MongoDB with Mongoose was chosen for its flexibility in handling complex health data.
+    - Web Scraping: I implemented Puppeteer to scrape real-time medicine prices from major online pharmacies (Netmeds, PharmEasy, 1mg), allowing users to compare prices instantly.
+    - Security: Implemented JWT (JSON Web Tokens) for secure user authentication and session management.
+
+*   Machine Learning & AI Service:
+    - Adherence Model: I developed a Python-based ML pipeline (using scikit-learn and pandas) to predict medication adherence risks based on patient behavior and demographics.
+    - GenAI Integration: I integrated Google's Gemini API to power the AI Chatbot and provide detailed, context-aware information about medicines.
+
+3. Key Features & Implementation Details
+----------------------------------------
+
+A. Medicine Search & Price Comparison
+   - How it works: Users search for a medicine, and the system queries multiple online pharmacy backends.
+   - Implementation: I created a custom web scraper using Puppeteer that runs on the backend. It navigates to pharmacy sites, extracts pricing data, and aggregates it for the user.
+   - AI Enhancement: integrated the Gemini API to fetch detailed metadata (usage, side effects) for the searched medicine, providing more context than just the price.
+
+B. AI Health Chatbot
+   - How it works: A dedicated interface where users can ask health-related questions.
+   - Implementation: The `AIChatPage` connects to a backend endpoint that acts as a proxy to the Gemini API. I engineered prompts to ensure the AI behaves as a helpful health assistant, providing safe and relevant advice while advising professional consultation.
+
+C. Medication Adherence Predictor
+   - How it works: Users input their demographic and behavioral data to see their risk of missing medication doses.
+   - Implementation: 
+     1. I generated a synthetic dataset simulating realistic patient behaviors.
+     2. Trained a Random Forest Classifier model to predict adherence probability.
+     3. Exposed this model via a Python API (or integrated logic) which the frontend `AdherencePredictorPage` consumes to display risk scores and personalized recommendations.
+
+D. Smart Reminders
+   - How it works: Users can set schedules for their medications.
+   - Implementation: The `RemindersPage` allows CRUD operations on reminder data. I used local browser notifications (and backend scheduling) to alert users when it's time to take their medicine.
+
+E. Personalized Meal Suggestions
+   - How it works: tailored meal plans based on user health goals.
+   - Implementation: The `MealPlanPage` uses logic to filter and recommend meals. This helps users maintain a diet that supports their medical conditions.
+
+F. Doctor Discovery
+   - How it works: Users can find specialists based on location and category.
+   - Implementation: The `DoctorListPage` renders a searchable list of medical professionals, filtering by specialty (e.g., Cardiologist, Dentist).
+
+G. Community Forum
+   - How it works: A space for users to share experiences and support each other.
+   - Implementation: The `CommunityPage` features a post/comment system where users can interact. I implemented this using MongoDB to store user-generated content and link it to user profiles.
+
+4. Conclusion
+-------------
+Through AYHS, I have demonstrated how modern web technologies and AI can converge to create a practical, user-centric healthcare solution. The project highlights my ability to build full-stack applications, integrate complex AI services, and develop custom machine learning models to solve real-world problems.

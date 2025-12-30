@@ -1,0 +1,73 @@
+.ayhs-footer {
+  width: 100%;
+  background: #f8faff;
+  color: #2d3748;
+  border-top: 1px solid #e2e8f0;
+  padding: 24px 0 12px 0;
+  font-size: 1rem;
+  box-shadow: 0 -2px 12px rgba(74, 144, 226, 0.04);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 40px;
+}
+
+.footer-main {
+  max-width: 900px;
+  width: 100%;
+  text-align: center;
+  margin-bottom: 8px;
+}
+
+.footer-title {
+  font-weight: 700;
+  font-size: 1.2rem;
+  margin-bottom: 6px;
+  color: #4a90e2;
+}
+
+.footer-mission {
+  font-size: 1.05rem;
+  color: #2d3748;
+  margin-bottom: 8px;
+}
+
+.footer-details {
+  font-size: 0.98rem;
+  color: #4a5568;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+  margin-bottom: 4px;
+}
+
+.footer-details a {
+  color: #4a90e2;
+  text-decoration: underline;
+  transition: color 0.2s;
+}
+
+.footer-details a:hover {
+  color: #2563eb;
+}
+
+.footer-bottom {
+  font-size: 0.95rem;
+  color: #718096;
+  margin-top: 4px;
+}
+
+@media (max-width: 600px) {
+  .footer-main {
+    font-size: 0.95rem;
+    padding: 0 8px;
+  }
+  .footer-title {
+    font-size: 1.05rem;
+  }
+  .footer-details {
+    font-size: 0.92rem;
+    gap: 4px;
+  }
+} 

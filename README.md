@@ -995,7 +995,7 @@ This project is part of an academic/research initiative. Please contact the repo
 
 **Project Maintainer**: Demiserular
 
-**Email**: shivam203093@gmail.com
+**Email**: Demiserular@gmail.com
 
 **Repository**: [https://github.com/Demiserular/AYHS-2.0](https://github.com/Demiserular/AYHS-2.0)
 

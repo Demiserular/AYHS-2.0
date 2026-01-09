@@ -2,9 +2,9 @@
 
 <div align="center">
 
-![AYHS Logo](./public/vite.svg)
-
 **A comprehensive web-based healthcare management platform powered by AI and Machine Learning**
+
+> 💡 **Note**: Add your project logo here by replacing the placeholder in `/public/` directory
 
 [![React](https://img.shields.io/badge/React-18.2.0-61DAFB?logo=react)](https://reactjs.org/)
 [![Node.js](https://img.shields.io/badge/Node.js-Express-339933?logo=node.js)](https://nodejs.org/)
@@ -267,11 +267,13 @@ cd ..
 
 ### 1. Environment Variables
 
-Create a `.env` file in the **backend** directory:
+Create a `.env` file in the **backend** directory based on the example:
 
 ```bash
 cd backend
+# Copy the example file from root directory
 cp ../.env.example .env
+# Or create manually and add the required environment variables
 ```
 
 Edit the `.env` file with your configuration:
@@ -359,17 +361,19 @@ Backend runs on: `http://localhost:3001`
 ```bash
 npm run dev
 ```
-Frontend runs on: `http://localhost:5174`
+Frontend runs on: `http://localhost:5173` (default Vite port)
 
 ### Access the Application
 
 Open your browser and navigate to:
 ```
-http://localhost:5174
+http://localhost:5173
 ```
 
+> **Note**: Vite uses port 5173 by default. If this port is already in use, Vite will automatically use the next available port (5174, 5175, etc.). Check your terminal output for the actual port.
+
 ### Default Ports
-- **Frontend**: 5174
+- **Frontend**: 5173 (default Vite port)
 - **Backend**: 3001
 - **MongoDB**: 27017
 
@@ -922,10 +926,11 @@ We welcome contributions to AYHS 2.0! Here's how you can help:
 
 ### Getting Started
 
-1. **Fork the repository**
-2. **Clone your fork**:
+1. **Fork the repository** on GitHub
+2. **Clone your fork** (replace `YOUR_USERNAME` with your GitHub username):
    ```bash
    git clone https://github.com/YOUR_USERNAME/AYHS-2.0.git
+   cd AYHS-2.0
    ```
 3. **Create a feature branch**:
    ```bash

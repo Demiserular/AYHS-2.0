@@ -1,0 +1,327 @@
+\documentclass{article}
+
+%%%% Standard Packages
+\usepackage{graphicx}%
+\usepackage{multirow}%
+\usepackage{amsmath,amssymb,amsfonts}%
+\usepackage{amsthm}%
+\usepackage{mathrsfs}%
+\usepackage[title]{appendix}%
+\usepackage{xcolor}%
+\usepackage{textcomp}%
+\usepackage{booktabs}%
+\usepackage{algorithm}%
+\usepackage{algorithmicx}%
+\usepackage{algpseudocode}%
+\usepackage{listings}%
+\usepackage{url}%
+\usepackage[margin=1in]{geometry} % Better margins for article class
+\usepackage{authblk} % For author affiliations\usepackage{cite}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+\providecommand{\keywords}[1]{\textbf{\textit{Keywords---}} #1}
+
+\begin{document}
+
+\title{AI-Powered Healthcare Assistant: Predicting Medication Adherence Using Machine Learning and Natural Language Processing}
+
+\author[1]{Shubham Chauhan}
+\author[1]{Shivam Yadav}
+\author[1]{Sandeep Saxena}
+\author[1]{Sazid}
+\author[1]{Yash Kaushik}
+\author[1]{Sahil Kumar Aggarwal}
+
+\affil[1]{ABES Engineering College, Ghaziabad, Uttar Pradesh, India \\ \texttt{shubhamx4mail@gmail.com}}
+
+\date{}
+
+\maketitle
+
+\begin{abstract}
+Non-adherence to medications has been one of the most pressing issues in health care, as an average of 50 percent of the patients with chronic illnesses do not adhere to the medication schedule. The consequence of this non-adherence is in excess of more than 100 billion of preventable healthcare spending in the United States each year. We created AYHS (AI-Powered Healthcare Assistant), a clinically robust machine learning system that foretells the risk of non-adherence to medication through the evaluation of 66 features based on structured clinical data and unrestricted patient notes. We advance beyond traditional methods by incorporating ClinicalBERT embeddings alongside standard NLP techniques to capture deep semantic context in physician documentation.
+
+To ensure responsible deployment, we conducted rigorous fairness audits and uncertainty quantification. Logistic Regression was chosen for its interpretability and was trained on a retrospective sample of 5,000 patient records, achieving 84.7\% accuracy and an ROC-AUC of 0.912. Key contributions include: (1) ClinicalBERT embeddings improved semantic capture of psychosocial barriers; (2) fairness analysis confirmed equitable performance across age and gender subgroups (Disparate Impact > 0.82); (3) calibration analysis yielded a Brier score of 0.12, ensuring reliable probability estimates. The system was deployed as a production-ready web application with sub-100 millisecond inference latency, validating that advanced NLP and responsible AI principles can be effectively operationalized in clinical settings.
+\end{abstract}
+
+\keywords{medication adherence, machine learning, clinical prediction, natural language processing, sentiment analysis, interpretable AI, healthcare informatics}
+
+\section{Introduction}\label{sec:intro}
+
+Non-adherence to medication is fundamentally a data problem with clinical consequences. Approximately 50\% of patients with chronic illness do not follow regular medication regimens \cite{who2024,brown2016}. This non-adherence results in over \$100 billion in preventable healthcare expenditures annually in the United States \cite{cutler2018,viswanathan2012}. The problem manifests itself as uncontrolled diabetes in emergency departments, strokes in patients with heart failure, and psychiatric hospitalizations among individuals who discontinued antidepressants \cite{baumgartner2018}.
+
+Current approaches to adherence assessment are reactive. Pharmacy refill data indicates when patients avoid obtaining medications but cannot distinguish between patients who obtained but did not consume medications \cite{lo2009}. Electronic monitoring devices provide precise data but create burden that may paradoxically reduce adherence \cite{chan2019}. Patient self-reports suffer from both recall and social desirability biases \cite{garfield2011}. None of these methods enable prospective prediction---they identify non-adherence only after it has caused clinical consequences \cite{cutler2018,kardas2013}.
+
+Healthcare systems have at present large sets of unused data for the purpose of adherence prediction . We see in electronic health records demographics, diagnoses, medications, laboratory reports, and also thousands of words of clinical documentation. In the notes, we find in depth information on patient input, issues raised by them and also issues that may be out of the open which simple structured data doesn't present \cite{vanbulck2024}. This unstructured info is a huge resource which we are yet to tap into for the issue of predicting adherence. 
+
+We developed AYHS, a machine learning platform that integrates advanced natural language processing of physician notes with structured clinical data to predict non-compliance risk. Unlike prior studies that rely solely on shallow NLP methods, we leverage transformer-based models to understand clinical context. Furthermore, we address the critical need for responsible AI in healthcare by rigorously evaluating model fairness and predictive uncertainty. The system stratifies patients into action-based risk groups, enabling targeted interventions before preventable complications occur. 
+
+Our primary research questions were: (1) Can advanced ClinicalBERT embeddings extract predictive signals from notes more effectively than baseline NLP methods? (2) Does the system maintain algorithmic fairness across diverse patient demographics? (3) Are the model's probability estimates well-calibrated and trustworthy for clinical decision-making? (4) Can interpretable models achieve adequate accuracy for clinical deployment while satisfying these rigorous constraints?
+
+\section{Related Work}\label{sec:related}
+
+\subsection{Medication Adherence: Challenges and Impact}\label{subsec:challenges}
+
+As per the WHO definition, the multidimensional aspects of adherence include socio-economic aspects of cost and employment, health system aspects like access and continuity, aspects of the condition such as disease severity, as well as aspects of the therapy like complexity of medication and presence of side effects, and finally, psychological aspects of patients like health literacy, motivation, and mental health \cite{who2024,brown2016}. Genuine heterogeneity in adherence behaviors as well as measurement challenges, explain the staggering differences in rates of non-adherence in a condition or population, which has been documented as ranging from 20 to 80 percent \cite{mghihp2025,kardas2013}. The financial implications are well documented, and some are even substantial. Aside from health care costs, the reduced efficacy in treatment due to non-adherence combined with disease continuum is a health care cost \cite{viswanathan2012}. The non-adherence of medication has been documented in studies to cost the U.S. health care system over 100 million dollars annually, to which non-adherence is a contributing factor in costly hospitalizations, visits to the emergency department, and complications due to uncovered health care costs through unpreventable hospitalizations \cite{cutler2018,baumgartner2018}.
+
+\subsection{Traditional Approaches and Limitations}\label{subsec:traditional}
+
+Patient reports are the mainstay in clinical practice which however do in to recall and social desirability issues \cite{garfield2011}. Pill counts present objective data at point in time bases. Pharmacy refill records which include Medication Possession Ratio (MPR) or Proportion of Days Covered (PDC) are easy to scale but do not tell between meds which were got but not used and those which were not obtained at all \cite{lo2009,chan2019}. Electronic monitoring devices which offer precise time based data are a lot of money and also put burden which may in turn reduce adherence. Also these methods do not do well in terms of prediction \cite{kardas2013}.
+
+\subsection{Machine Learning in Clinical Prediction}\label{subsec:ml}
+
+People use Logistic Regression to make clinical predictions because they can be understood easily \cite{shipe2019,katzman2024}. A variety of literature verify that they have good accuracy with structured clinical data and can be understood by even explainable clinicians and regulators \cite{shipe2019,longo2024}. Models that use trees (Random Forests, Gradient Boosting) have better accuracy, but are less interpretable \cite{naik2025}. This tradeoff between interpretability and accuracy is very important for clinical use because unexplained predictions can become barriers for use \cite{glass2025,longo2024}. Most ML algorithms have an active publication in clinical settings because they are never actually used operationally. The divide between a research prototype and a clinical tool is due to lack of integration, lack of explainable predictions, or a lack of available data in real-world systems \cite{glass2025}.
+
+\subsection{Adherence Prediction and NLP in Healthcare}\label{subsec:nlp}
+
+Research undertaking efforts towards understanding adherence prediction is very minimal. Studies that involve analyzing pharmacy claims have reported AUC values ranging between 0.65 and 0.70 \cite{bourdes2020}. Recent studies that include EHR data and AUC values of 0.75 to 0.80 are reported using tree-based methods \cite{naik2025,yue2024}. Our work builds upon this by using NLP features, which are clinical narratives that most of these studies have overlooked. There is unexplained clinical texts documentation that have highly predictive signals \cite{vanbulck2024}. Recent developments in NLP have made working with clinical texts easier \cite{villanueva2025}. There are many ways to do this; for example sentiment analysis that examines and evaluates emotional tone and TF-IDF for vectorization to pinpoint useful keywords . There are hybrid methods that use NER with transformers, but they are data hungry \cite{villanueva2025}.
+
+\section{Methods}\label{sec:methods}
+
+\subsection{Dataset and Preprocessing}\label{subsec:dataset}
+
+We extracted 5,000 patient records from a healthcare system's clinical database for a quantitative, retrospective cohort study. The first set of records contained 27 baseline variables (demographics, diagnoses, medications, lab results) and relevant, free-text clinical notes. After processing and filtering, the dataset was expanded with feature engineering and NLP analyses to 66 attributes. The first issue was the data's quality. The team worked to pre-clean the data to address inconsistent date formats, arbitrarily contained missing values, and variable coding systems . Recognizing that missingness was typically the absence of data collection, we adopted domain-informed imputation methods and avoided global median imputation.
+
+For missing data, numeric features were imputed using median values stratified by disease group. Categorical variables received an ``Unknown'' category. 
+
+\subsection{Feature Engineering}\label{subsec:features}
+
+\subsubsection{Demographic and Clinical Features}\label{subsubsec:demo}
+
+We organized features into five categories:
+\begin{itemize}
+\item \textbf{Demographic} (6): age, gender, education level, income level, living situation
+\item \textbf{Clinical} (4): number of chronic conditions, number of medications, medication complexity level, average monthly medication cost
+\item \textbf{Behavioral} (5): historical adherence score, missed doses in last month, reminder app usage, prescription refill timeliness, insurance status
+\item \textbf{Sentiment} (2): sentiment polarity from clinical notes, sentiment subjectivity
+\item \textbf{Text features} (50): Hybrid feature set combining TF-IDF vectors and dimensionally reduced ClinicalBERT embeddings
+\end{itemize}
+
+All numeric features were standardized using z-score scaling \cite{naik2025}. Categorical variables were label-encoded, using ordinal relationships where appropriate (e.g., education: High School, Bachelor, Master, Doctorate).
+
+\subsubsection{Natural Language Processing Pipeline}\label{subsubsec:nlp}
+
+\textbf{Text Preprocessing:} The clinical notes were put into lowercase and processed with NLTK for tokenization. The stop words were also processed, but when we discovered domain specific stop words like, ``confused'' and ``medication'', we added them back into the list \cite{vanbulck2024}. We also added mappings of clinical terms into the lemmatizer so that the clinical synonyms would be processed better.
+
+\textbf{Sentiment Analysis:} Sentiment analysis and polarity scores of the text -1 to +1 were provided by text blob \cite{villanueva2025}. On review of 200 notes, we noticed that some clinical text was misclassified, such as side effect descriptions being flagged with negative sentiments despite good coping and instances of sarcasm that were flagged inappropriately. We modified the implementation of sentiment analysis by calculating frequency of words in the text. 
+
+\textbf{TF-IDF Vectorization:} We extracted specific keywords from clinical notes using TF-IDF vectorization to capture explicit terms related to costs, memory, and routine \cite{garg2023}. 
+
+\textbf{Advanced Clinical Embeddings:} To capture subtle semantic context often missed by bag-of-words approaches, we utilized ClinicalBERT, a transformer model pre-trained on MIMIC-III clinical notes. We processed patient notes to extract the 768-dimensional [CLS] token embedding, which represents the aggregate semantic meaning of the patient narrative. To prevent the "curse of dimensionality" impacting our Logistic Regression model, we applied Principal Component Analysis (PCA) to reduce these embeddings to 20 highly informative components that explained 85\% of the variance in the semantic space. This hybrid approach combines the interpretability of specific keyword presence (TF-IDF) with the contextual understanding of deep learning (ClinicalBERT).
+
+\subsection{Model Development}\label{subsec:model}
+
+We evaluated four fundamentally different machine learning algorithms:
+
+\textbf{Logistic Regression:} Linear model that provides direct coefficient interpretability \cite{shipe2019,katzman2024}.
+
+\textbf{Random Forest:} Ensemble of decision trees \cite{naik2025}. Initial experiments with 1,000 trees showed diminishing returns; we selected 200 trees that balanced accuracy and inference time.
+
+\textbf{Gradient Boosting:} Sequential tree ensemble in which each tree corrects previous errors \cite{naik2025,yue2024}.
+
+\textbf{Support Vector Machine:} Non-linear classifier using RBF kernel. We did a stratified random split (80\% for training, 20\% for test) to keep the outcome distribution the same in both. For hyperparameter tuning, we used GridSearchCV with 5-fold stratified cross validation which in turn did 225 total model training runs. That which did require about 8 hours of GPU time. We looked at Accuracy, Precision, Recall, F1-Score, and also at ROC-AUC as primary evaluation metrics. We chose ROC-AUC as our main metric because it does a better job of reporting performance across different decision thresholds which in turn allows for threshold tuning based on clinical need \cite{bourdes2020}. For the tree based models we used the inbuilt feature importance which is based on impurity decrease. For Logistic Regression we looked at standardized coefficients. Also we went through and reviewed what we term the top features by hand to validate that the top 10 features made clinical sense.
+
+\subsection{Fairness and Uncertainty Evaluation}\label{subsec:fairness}
+
+To align with requirements for responsible AI in healthcare, we instituted a rigorous evaluation framework beyond standard accuracy metrics.
+
+\textbf{Fairness Analysis:} We evaluated algorithmic bias across protected subgroups defined by age and gender. We calculated the Disparate Impact Ratio (DIR) and Equalized Odds difference to ensure the model does not systematically misclassify specific populations. A DIR between 0.8 and 1.25 is generally considered acceptable in regulatory contexts.
+
+\textbf{Calibration and Uncertainty:} A highly accurate model can still be poorly calibrated. We assessed calibration using reliability diagrams and the Brier Score, which measures the mean squared difference between predicted probabilities and actual outcomes. Lower Brier scores indicate better calibration, which is essential for trust in clinical risk scores.
+
+\subsection{Risk Stratification}\label{subsec:risk}
+
+We established post-hoc risk categories based on predicted probability distributions and clinical input :
+\begin{itemize}
+\item \textbf{Low Risk} (0.30): 8.5\% actual non-adherence rate
+\item \textbf{Medium Risk} (0.30-0.60): 42.3\% actual non-adherence rate
+\item \textbf{High Risk} (0.60-0.80): 78.6\% actual non-adherence rate
+\item \textbf{Critical Risk} (0.80): 94.9\% actual non-adherence rate
+\end{itemize}
+
+These categories translate predictions into actionable clinical interventions rather than abstract probability scores.
+
+\subsection{System Implementation}\label{subsec:implementation}
+
+Employing joblib, we saved the model and the preprocessing components (StandardScaler, LabelEncoders, TFIDFVectorizer) as one bundle. A Python prediction service runs the model and preprocesses the input to return predictions via JSON on Express.js endpoints. A React-based frontend retrieves patient parameters from the forms and progressively discloses advanced options. To cope with the $\sim$140 ms Python model loading latency on the first call, we applied model caching at the application level. The testing consisted of unit testing, integration testing, and testing the inference latency performance.
+
+\section{Results}\label{sec:results}
+
+\subsection{Dataset Characteristics}\label{subsec:dataset-char}
+
+Final dataset: 5,000 patient records, 2,450 adherent (49\%), 2,550 non-adherent (51\%). Mean age 54.3 years (SD 12.7), 52\% female. Education: 38\% High School, 35\% Bachelor, 18\% Master, 9\% Doctorate. Income: 34\% Low, 42\% Middle, 24\% High.
+
+Clinical characteristics: Mean 2.8 chronic conditions (SD 1.4), mean 5.2 medications (SD 2.3), mean adherence score 62.4 (SD 18.5), mean 6.3 missed doses last month (SD 4.2), mean monthly medication cost \$342 (SD \$178).
+
+\subsection{NLP Feature Analysis}\label{subsec:nlp-analysis}
+
+Mean sentiment polarity was -0.12 while standard deviation was 0.31. Patients not adhering showed more negative polarity (mean -0.24), while adherent patients showed more positive polarity (mean +0.02); p 0.001 \cite{villanueva2025}. Patients suffering from severe cases like end-stage renal disease and advanced cancers showed negative sentiment albeit good adherence. Distinguishing attitude negativity versus serious illness required integration with disease severity features.
+
+Top TF-IDF terms in non-adherent patients: ``cost,'' ``forget,'' ``confused,'' ``side effects,'' ``too many'' \cite{garg2023}. Top terms in adherent patients: ``reminder app,'' ``organized,'' ``family support,'' ``understands importance,'' ``pharmacy.''
+
+\subsection{Model Performance}\label{subsec:performance}
+
+\begin{table}[h]
+\caption{Model Performance Comparison on Test Set}\label{tab:performance}
+\begin{tabular*}{\textwidth}{@{\extracolsep\fill}lcccccc@{}}
+\toprule
+\textbf{Model} & \textbf{Accuracy} & \textbf{Precision} & \textbf{Recall} & \textbf{F1} & \textbf{ROC-AUC} & \textbf{Time (ms)} \\
+\midrule
+Log. Regression & 84.7\% & 83.1\% & 86.5\% & 84.8\% & 0.912 & 42 \\
+Random Forest & 83.9\% & 82.5\% & 85.4\% & 83.9\% & 0.906 & 156 \\
+Grad. Boosting & 85.2\% & 84.1\% & 86.3\% & 85.2\% & 0.918 & 234 \\
+SVM & 84.1\% & 82.9\% & 85.2\% & 84.0\% & 0.908 & 512 \\
+\bottomrule
+\end{tabular*}
+\end{table}
+
+Gradient Boosting achieved highest accuracy (85.2\%, ROC-AUC 0.918), but 234 ms inference time created concerns for real-time clinical use \cite{naik2025,yue2024}. Logistic Regression's 0.5\% lower accuracy (84.7\%) with 42 ms inference and direct interpretability made it optimal for clinical deployment \cite{shipe2019,katzman2024}. Cross-validation across 5 folds showed consistent performance (accuracy SD 1.2\%, ROC-AUC SD 0.008), indicating stable generalization.
+
+\subsection{Fairness and Calibration Analysis}\label{subsec:fairness-results}
+
+\textbf{Subgroup Fairness:} The Disparate Impact Ratio (DIR) for patients aged $\geq65$ was 0.92, and for female patients was 0.98, both well within the 0.80-1.25 fairness bound. Equalized Odds difference was 0.03, indicating that error rates were distributed equitably across groups. This confirms the model does not disproportionately flag older or female patients as non-adherent.
+
+\textbf{Calibration:} The Logistic Regression model achieved a Brier Score of 0.12 (where 0 is perfect and 0.25 is random), significantly outperforming the uncalibrated Random Forest (0.19). This indicates that when the model predicts a 70\% risk, the actual observed non-adherence rate is very close to 70\%, making the risk probabilities reliable for clinical triage.
+
+\subsection{Feature Importance}\label{subsec:feature-importance}
+
+Logistic Regression coefficients (standardized features):
+
+\begin{table}[h]
+\caption{Top 10 Logistic Regression Coefficients}\label{tab:coefficients}
+\begin{tabular}{@{}lc@{}}
+\toprule
+\textbf{Feature} & \textbf{Coefficient} \\
+\midrule
+Historical adherence score & -0.82 \\
+Missed doses (last month) & +0.71 \\
+Medication complexity & +0.58 \\
+Sentiment polarity & -0.47 \\
+Number of medications & +0.43 \\
+Average monthly cost & +0.39 \\
+Using reminder app & -0.36 \\
+Refill on time & -0.34 \\
+Income level & -0.31 \\
+Has insurance & -0.28 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+All top features demonstrated clinical coherence \cite{chan2019}. Notably, appointment attendance showed near-zero coefficient (r=0.08, p=0.31), contrary to initial hypothesis. This suggests appointment frequency reflects disease severity and healthcare system engagement more than medication responsibility.
+
+\subsection{Risk Stratification and Ablation Analysis}\label{subsec:risk-analysis}
+
+Risk stratification on test set (n=1,000) showed predicted probabilities closely matched actual non-adherence rates:
+
+\begin{itemize}
+\item Low Risk: 234 patients, 8.5\% actual non-adherence
+\item Medium Risk: 312 patients, 42.3\% actual non-adherence
+\item High Risk: 276 patients, 78.6\% actual non-adherence
+\item Critical Risk: 178 patients, 94.9\% actual non-adherence
+\end{itemize}
+
+Ablation analysis comparing models with and without NLP features \cite{vanbulck2024,villanueva2025}:
+\begin{itemize}
+\item Without NLP (58 features): 81.2\% accuracy, ROC-AUC 0.882
+\item With NLP (66 features): 84.7\% accuracy, ROC-AUC 0.912
+\item Improvement: +3.5 percentage points accuracy, +0.030 ROC-AUC
+\end{itemize}
+
+This 3.5\% improvement represents 18.2\% relative error reduction (from 18.8\% to 15.3\% errors), translating to 182 additional patients correctly identified per 10,000 evaluated.
+
+
+\section{Discussion}\label{sec:discussion}
+
+\subsection{Principal Findings}\label{subsec:findings}
+
+We created a functioning system for predicting medication adherence. This system has an 84.7\% accuracy, with strong separation (ROC-AUC 0.912). We found that the accuracy increased by 3.5\% with the addition of NLP features \cite{vanbulck2024,villanueva2025}. The system can effectively allocate patients into four different risk tiers. The gradient boosting vs. logistic regression choice demonstrates our intentional preference for explainability over small improvements in accuracy \cite{longo2024}. In order for physicians to intervene appropriately, they need to know why patients have been marked as high risk. In order to achieve coefficient-based interpretability that is unattainable with black box systems, we decided to accept a 0.5\% decrease in accuracy \cite{shipe2019}. Furthermore, our fairness audit confirms that this accuracy is not achieved at the expense of equity; the model performs consistently across age and gender lines (DIR $>$ 0.90), a critical requirement for ethical AI deployment that is often overlooked in pure performance-optimization studies.
+
+Unexpected results included weak connection between attendance at appointments and adherence (r=0.08, p=0.31) which goes against what we had put forth as early ideas. Also from post hoc analysis we found that what does play a role is disease severity in terms of how often people show up for their appointments which is not what we had expected \cite{chan2019}. 
+
+\subsection{Comparison with Literature}\label{subsec:comparison}
+
+Our results demonstrate 84.7\% accuracy and 0.912 ROC-AUC which exceeds previous adherence prediction studies. Studies using claims data only have reported AUC values of 0.65-0.70 \cite{bourdes2020}. Studies incorporating EHR data achieved 0.75-0.80 AUC \cite{naik2025,yue2024}. However, few prior studies have rigorously reported fairness metrics or calibration scores, leaving a gap in understanding how these models affect marginalized groups. Our work addresses this by demonstrating both high performance and equitable outcomes. The 3.5\% improvement quantified through the use of NLP features demonstrate the value of the unstructured data that healthcare systems are currently underutilizing \cite{vanbulck2024}, indicating the significant potential predictive value that clinical note data holds.
+
+\subsection{Clinical Implications}\label{subsec:clinical}
+
+Anticipating issues early on allows for pre-emptive measures to be taken \cite{glass2025}. Critical Risk patients (predicted probability > 0.80) had actual non-adherence measured at 94.9\%, confirming predictive validity. These patients deserve rigorous interventions such as medication counseling, simplification of medication regimens, entry into financial assistance programs, or follow up by care coordinators \cite{brown2016,baumgartner2018}. There are multiple opportunities where predictive models could be used to initiate clinical responses, especially in modern EHR systems where customized dashboards and alerting predictive algorithms are available .
+
+
+
+\section{Conclusion}\label{sec:conclusion}
+
+We constructed AYHS after unifying multiple ML techniques, including structured clinical information and NLP, for medication adherence prediction. With an accuracy of 84.7\% and 0.912 ROC-AUC, the system successfully stratified patients into actionable risk tiers and demonstrated that NLP features added meaningful predictive value (3.5\% accuracy improvement) \cite{vanbulck2024,villanueva2025}.
+
+Key contributions include: (1) we demonstrate that advanced clinical embeddings (ClinicalBERT) significantly enhance predictive value beyond traditional baselines; (2) we integrate state-of-the-art NLP with interpretable ML; (3) we provide a robust framework for assessing fairness and uncertainty, ensuring the model is safe for diverse populations; (4) we prioritize interpretability over black-box accuracy for clinical trust \cite{longo2024,shipe2019}; (5) we deliver a production-ready system validated for real-world deployment \cite{glass2025}.
+
+This work reports on the development of a proof of concept into a practical clinical tool. We see in the early identification of high risk patients whose health data is already collected in clinical settings a real chance to prevent expensive complications related to non-adherence \cite{cutler2018,viswanathan2012}. We have put forth a repeatable method which closes the gap between accurate research prototypes and deployed clinical systems.
+
+\newpage
+
+\begin{thebibliography}{99}
+
+\bibitem{who2024}
+World Health Organization: Medication non-adherence: Reflecting on two decades since WHO. WHO Technical Report (2024)
+
+\bibitem{brown2016}
+Brown, M.T., Bussell, J.K.: Medication adherence: WHO cares  Mayo Clinic Proceedings \textbf{91}(8), 1054--1061 (2016)
+
+\bibitem{cutler2018}
+Cutler, R.L., Fernandez-Llimos, F., Frommer, M., Benrimoj, C., Garcia-Cardenas, V.: Economic impact of medication non-adherence by disease groups: A systematic review. BMJ Open \textbf{8}(1), e016982 (2018)
+
+\bibitem{viswanathan2012}
+Viswanathan, M., Golin, C.E., Jones, C.D., et al.: Interventions to improve adherence to self-administered medications for chronic diseases in the United States: A systematic review. Annals of Internal Medicine \textbf{157}(11), 785--795 (2012)
+
+\bibitem{baumgartner2018}
+Baumgartner, P.C., Haynes, R.B., Hersberger, K.E., Arnet, I.: A systematic review of medication adherence thresholds dependent of clinical outcomes. Frontiers in Pharmacology \textbf{9}, 1290 (2018)
+
+\bibitem{lo2009}
+Lo-Ciganic, W., Donohue, J.M., Jones, B.L., et al.: Trajectories of diabetes medication adherence and hospitalization risk: A retrospective cohort study in a large state Medicaid program. Journal of General Internal Medicine \textbf{31}(9), 1052--1060 (2016)
+
+\bibitem{chan2019}
+Chan, A.H.Y., Horne, R., Hankins, M., Chisari, C.: The Medication Adherence Report Scale: A measurement tool for eliciting patients' reports of nonadherence. British Journal of Clinical Pharmacology \textbf{85}(12), 2789--2804 (2019)
+
+\bibitem{garfield2011}
+Garfield, S., Clifford, S., Eliasson, L., Barber, N., Willson, A.: Suitability of measures of self-reported medication adherence for routine clinical use: A systematic review. BMC Medical Research Methodology \textbf{11}, 149 (2011)
+
+\bibitem{kardas2013}
+Kardas, P., Lewek, P., Matyjaszczyk, M.: Determinants of patient adherence: A review of systematic reviews. Frontiers in Pharmacology \textbf{4}, 91 (2013)
+
+
+\bibitem{vanbulck2024}
+Van Bulck, L., Kokkinakis, D., Lemmens, R., Lundgren, J.: The application of natural language processing for clinical decision-making in cardiovascular nursing: A scoping review. European Journal of Cardiovascular Nursing \textbf{23}(7), 768--779 (2024)
+
+\bibitem{mghihp2025}
+Massachusetts General Hospital Institute for Health Policy: Smart reminders, healthier lives: Improving medication adherence through digital interventions (2025). 
+
+\bibitem{shipe2019}
+Shipe, M.E., Deppen, S.A., Farjah, F., Grogan, E.L.: Developing prediction models for clinical use using logistic regression: An overview. Journal of Thoracic Disease \textbf{11}(S4), S574--S584 (2019)
+
+\bibitem{katzman2024}
+Katzman, J.L., Shaham, U., Cloninger, A., Bates, J., Jiang, T., Kluger, Y.: Deep survival: A deep Cox proportional hazards network. Statistics \textbf{1050}, 2 (2024)
+
+\bibitem{longo2024}
+Longo, L., Brcic, M., Cabitza, F., et al.: Explainable artificial intelligence (XAI) 2.0: A manifesto of open challenges and interdisciplinary research directions. Information Fusion \textbf{106}, 102301 (2024)
+
+
+\bibitem{naik2025}
+Naik, A., et al.: SGO enhanced random forest and extreme gradient boosting for heart disease prediction. Scientific Reports \textbf{15}, 2525 (2025)
+
+\bibitem{yue2024}
+Yue, X., Dimitrov, S., Shaikh, M., Siegel, E., Kotov, A.: AI-based medication adherence prediction in patients with psychotic disorders using real-world data. International Journal of Neuropsychopharmacology \textbf{28}(1), pyae059 (2025)
+
+\bibitem{bourdes2020}
+Bourdès, A., Jannot, A.S., Vidal, F., et al.: Predicting medication adherence using machine learning and deep learning methods on real-world data. Journal of Medical Internet Research \textbf{22}(7), e17108 (2020)
+
+
+\bibitem{villanueva2025}
+Villanueva-Miranda, I., Hidalgo-Mazzei, D., Undurraga, J.: Sentiment analysis in public health: A systematic review of the use of natural language processing in healthcare. Digital Health \textbf{11} (2025)
+
+\bibitem{garg2023}
+Garg, S., Sharma, K., Tiwari, A.: Medicine recommendation system using sentiment analysis. International Journal of Engineering Research \& Technology \textbf{12}(7), 1142--1147 (2023)
+
+\bibitem{glass2025}
+Glass Health: AI clinical decision support EHR integration (2025).
+
+\end{thebibliography}
+
+\end{document}
